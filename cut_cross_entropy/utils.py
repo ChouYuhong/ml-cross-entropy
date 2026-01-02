@@ -118,9 +118,17 @@ def is_torch_greater_or_equal_2_5() -> bool:
 
 @functools.cache
 def is_triton_3_2() -> bool:
-    return packaging.version.parse(
-        packaging.version.parse(importlib.metadata.version("triton")).base_version
-    ) == packaging.version.parse("3.2")
+    target_version = packaging.version.parse("3.2")
+    # triton or dist
+    for pkg in ["triton", "triton_dist"]:
+        try:
+            v = importlib.metadata.version(pkg)
+            # only one
+            return packaging.version.parse(packaging.version.parse(v).base_version) == target_version
+        except importlib.metadata.PackageNotFoundError:
+            continue
+    # No both
+    raise ImportError("Neither triton nor triton_dist is installed.")
 
 
 @dataclass(slots=True)
