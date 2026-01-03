@@ -1,5 +1,6 @@
 # Copyright (C) 2024 Apple Inc. All Rights Reserved.
 import functools
+import importlib.metadata
 
 import triton
 import triton.language as tl
