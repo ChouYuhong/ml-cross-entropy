@@ -11,7 +11,7 @@ from torch.autograd import Function
 from cut_cross_entropy.constants import IGNORE_INDEX
 
 
-@torch.compile(fullgraph=True)
+# @torch.compile(fullgraph=True)
 def softcapping(logits: torch.Tensor, softcap: float) -> torch.Tensor:
     return torch.tanh(logits / softcap) * softcap
 
@@ -63,7 +63,7 @@ def handle_reduction_none(
     return full_value.view(batch_shape)
 
 
-@torch.compile(fullgraph=True)
+# @torch.compile(fullgraph=True)
 def compute_z_loss(
     lse: torch.Tensor,
     targets: torch.Tensor | None = None,
