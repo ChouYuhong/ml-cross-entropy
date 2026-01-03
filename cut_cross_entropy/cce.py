@@ -39,14 +39,15 @@ class CCEParams:
     return_lse: bool
 
 
-@torch.compile(fullgraph=True)
+# @torch.compile(fullgraph=True)
 def sort_logit_avg(logit_avg: torch.Tensor) -> torch.Tensor:
     return torch.argsort(logit_avg).to(torch.int32)
 
 
 class LinearCrossEntropyFunction(torch.autograd.Function):
+    
+    # @torch.amp.custom_fwd(device_type="cuda")
     @staticmethod
-    @torch.amp.custom_fwd(device_type="cuda")
     def forward(
         ctx,
         e: torch.Tensor,
@@ -140,8 +141,9 @@ class LinearCrossEntropyFunction(torch.autograd.Function):
 
         return loss, ret_lse
 
+    
+    # @torch.amp.custom_bwd(device_type="cuda")
     @staticmethod
-    @torch.amp.custom_bwd(device_type="cuda")
     def backward(
         ctx, grad_out: torch.Tensor, grad_lse_out: torch.Tensor | None
     ) -> tuple[torch.Tensor | None, torch.Tensor | None, torch.Tensor | None, None]:
