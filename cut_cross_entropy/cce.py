@@ -46,6 +46,7 @@ def sort_logit_avg(logit_avg: torch.Tensor) -> torch.Tensor:
 
 class LinearCrossEntropyFunction(torch.autograd.Function):
     @staticmethod
+    @torch.amp.custom_fwd(device_type="cuda")
     def forward(
         ctx,
         e: torch.Tensor,
@@ -140,6 +141,7 @@ class LinearCrossEntropyFunction(torch.autograd.Function):
         return loss, ret_lse
 
     @staticmethod
+    @torch.amp.custom_bwd(device_type="cuda")
     def backward(
         ctx, grad_out: torch.Tensor, grad_lse_out: torch.Tensor | None
     ) -> tuple[torch.Tensor | None, torch.Tensor | None, torch.Tensor | None, None]:
