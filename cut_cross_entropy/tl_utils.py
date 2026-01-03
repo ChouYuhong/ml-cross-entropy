@@ -96,4 +96,10 @@ def b_bin_fn(b: int) -> int:
 
 @functools.cache
 def is_triton_greater_or_equal_3_2_0() -> bool:
-    return is_package_greater_or_equal("triton", "3.2.0")
+    for pkg in ["triton", "triton_dist"]:
+        try:
+            return is_package_greater_or_equal(pkg, "3.2.0")
+        except importlib.metadata.PackageNotFoundError:
+            continue
+    # No both
+    raise ImportError("Neither triton nor triton_dist is installed.")
