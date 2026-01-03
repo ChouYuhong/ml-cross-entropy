@@ -15,7 +15,7 @@ from cut_cross_entropy.vocab_parallel import (
 )
 
 
-@torch.compile(fullgraph=True)
+# @torch.compile(fullgraph=True)
 def torch_compile_linear_cross_entropy_apply(
     e: torch.Tensor,
     c: torch.Tensor,
